@@ -1,0 +1,17 @@
+
+The repo is the implementation of the CLISA model for "Contrastive Learning of Subject-Invariant EEG Representations for Cross-Subject Emotion Recognition". 
+
+See the paper on https://arxiv.org/abs/2109.09559
+
+The model is based on PyTorch 1.7.1, Python 3.8.10, and Matlab R2020b.
+
+For the generic cross-subject emotion recognition task on the SEED dataset, the steps for running the model are as follows:
+1. Run run_cl_de_norm.py in python for contrastive learning, extracting DE features, and adaptive normalization. This process will take hours (around two hours on our server) to run.
+2. Run smooth_features_de_seed.m in matlab for smoothing by linear dynamical systems.
+3. Run run_classifier.py in python for MLP classifier with extrated features as input.
+
+For the generalizability test for unseen emotional stimuli of testing subjects on the SEED dataset, the steps for running the model are as follows:
+1. Run run_cl_de_norm_sepVideo.py in python for contrastive learning (only on training videos of training subjects), extracting DE features, and adaptive normalization.
+2. Run smooth_features_de_seed_sepVideo.m in matlab for smoothing by linear dynamical systems.
+3. Run run_classifier.py in python for MLP classifier with extrated features as input.
+
