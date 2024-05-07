@@ -36,6 +36,7 @@ torch.cuda.set_device(args.gpu_index)
 timeLen = 1
 timeStep = 1
 fs = 200
+fs = 125
 channel_norm = False
 time_norm = False
 data_len = fs * timeLen
@@ -48,7 +49,7 @@ multiFact = 2
 
 randomInit = False
 stratified = []
-data_dir = '/mnt/shenxinke/SEED/interp_removeAber_filt4_47_reref'
+data_dir = './data/SEED'
 save_dir = './runs_seed/raw_batch15_timeLen30_tf16_sf16_tfLen48_multiFact2_lr0.000700_wd0.015000_epochs100_randSeed7_accSel'
 
 data, label_repeat, n_samples, n_samples_remain = load_seed_raw(data_dir, timeLen, timeStep, channel_norm, time_norm)

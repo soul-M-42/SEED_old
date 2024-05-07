@@ -7,7 +7,7 @@ import pickle
 from torch.utils.data import DataLoader
 from io_utils import SEEDDataset_raw, TrainSampler_SEED, TrainSampler_video
 from load_data import load_seed_raw
-from model import ConvNet_baseNonlinearHead_SEED, ConvNet_nonlinearHead_norm_SEED
+from model import ConvNet_baseNonlinearHead_SEED
 from simCLR import SimCLR
 from train_utils import train_earlyStopping
 from torchvision import transforms
@@ -71,8 +71,8 @@ n_spatialFilters = args.n_spatialFilters
 n_timeFilters = args.n_timeFilters
 timeFilterLen = args.timeFilterLen
 multiFact = 2
-n_channs = 62
-fs = 200
+n_channs = 60
+fs = 125
 
 # The current method only supports timeLen and timeStep that can 整除. So timeStep would be better 1.
 timeLen = args.timeLen
@@ -88,6 +88,7 @@ for i in range(len(label_init)):
 print(label_init)
 
 data_dir = '/mnt/shenxinke/SEED/interp_removeAber_filt4_47_reref/'
+data_dir = './data/SEED/'
 data, label_repeat, n_samples, n_samples_remain = load_seed_raw(data_dir, timeLen, timeStep, channel_norm, time_norm)
 
 args.device = torch.device('cuda')
