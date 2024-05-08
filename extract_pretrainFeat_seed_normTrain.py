@@ -44,7 +44,7 @@ data_len = fs * timeLen
 n_spatialFilters = 16
 n_timeFilters = 16
 timeFilterLen = 48
-n_channs = 62
+n_channs = 60
 multiFact = 2
 
 randomInit = False

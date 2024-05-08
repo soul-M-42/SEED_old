@@ -39,7 +39,7 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 torch.set_num_threads(8)
-use_features = 'features1_de_1s_all_normTrain_rnPreWeighted0.990_lds.mat'
+use_features = 'features1_de_1s_all_normTrain_rnPreWeighted0.990_lds.npy'
 isLds = True
 channel_norm = False
 time_norm = False
@@ -47,7 +47,8 @@ stratified = False
 isFilt = False
 
 hidden_dim = args.hidden_dim
-fs = 200
+# fs = 200
+fs = 125
 
 timeLen = 1
 timeStep = 1

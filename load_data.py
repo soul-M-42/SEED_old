@@ -98,7 +98,8 @@ def load_seed_de_trainVal(data_dir, channel_norm, prepSxk, isLds, isFilt, filtLe
     
 
 def load_seed_pretrainFeat(datadir, channel_norm, timeLen, timeStep, isFilt, filtLen):
-    n_samples = sio.loadmat('/mnt/shenxinke/SEED/interp_removeAber_filt4_47_reref/n_samples.mat')['n_samples'][0]
+    # n_samples = sio.loadmat('/mnt/shenxinke/SEED/interp_removeAber_filt4_47_reref/n_samples.mat')['n_samples'][0]
+    n_samples = sio.loadmat(os.path.join('./data/SEED', 'n_samples.mat'))['n_samples'][0]
     for i in range(len(n_samples)):
         n_samples[i] = int((n_samples[i] - timeLen) / timeStep + 1)
 
@@ -109,7 +110,9 @@ def load_seed_pretrainFeat(datadir, channel_norm, timeLen, timeStep, isFilt, fil
         data = sio.loadmat(datadir)['de_lds']
         data[np.isnan(data)] = -8
         # data[data < -8] = -8
-    
+    if(np.isnan(data).any()):
+        print('nan in data')
+        data = np.nan_to_num(data, nan=0)
     print(data.shape)
     print(np.min(data), np.median(data))
 
@@ -135,7 +138,7 @@ def load_seed_pretrainFeat(datadir, channel_norm, timeLen, timeStep, isFilt, fil
 
     label_repeat = []
     for i in range(len(label)):
-        label_repeat = label_repeat + [label[i]]*n_samples[i]
+        label_repeat = label_repeat + [label[i]]*int(n_samples[i])
     return data, label_repeat, n_samples
 
 
@@ -245,6 +248,44 @@ def load_seed_raw(data_dir, timeLen, timeStep, channel_norm, time_norm):
     label = [1,	0,	-1,	-1,	0,	1,	-1,	0,	1,	1,	0,	-1,	0,	1,	-1]
     for i in range(len(label)):
         label[i] = label[i] + 1
+    print(label)
+
+    label_repeat = []
+    for i in range(len(label)):
+        label_repeat = label_repeat + [label[i]]*n_samples[i]
+    return data, label_repeat, n_samples, n_samples_remain
+
+def load_Faced_raw(data_dir, timeLen, timeStep, channel_norm, time_norm, n_class='3'):
+    n_samples_old = sio.loadmat(os.path.join(data_dir, 'n_samples.mat'))['n_samples'][0]
+    data = np.load(os.path.join(data_dir, 'data_all.npy'))
+    print('data loaded:', data.shape)
+    
+    # (n_subs, n_points, n_channs)
+    data = data.transpose(0,2,1)
+    n_samples_remain = np.zeros(len(n_samples_old), dtype=int)
+    n_samples = np.zeros(len(n_samples_old), dtype=int)
+    for i in range(len(n_samples)):
+        n_samples[i] = int((n_samples_old[i] - timeLen) / timeStep + 1)
+        n_samples_remain[i] = n_samples_old[i] - n_samples[i] * timeStep
+        
+    print('n_samples sum', np.sum(n_samples))
+    print('n_samples_old', n_samples_old)
+
+    if channel_norm:
+        for i in range(data.shape[0]):
+            data[i,:,:] = (data[i,:,:] - np.mean(data[i,:,:], axis=0)) / np.std(data[i,:,:], axis=0)
+
+    if time_norm:
+        data = (data - np.tile(np.expand_dims(np.mean(data, axis=2), 2), (1, 1, data.shape[2]))) / np.tile(
+            np.expand_dims(np.std(data, axis=2), 2), (1, 1, data.shape[2])
+        )
+
+    Faced_Labels_3 = np.array([0] * 12 + [1] * 4 + [2] * 12)
+    Faced_Labels_9 = np.array([0] * 3 + [1] * 3 + [2] * 3 + [3] * 3 + [4] * 4 + [5] * 3 + [6] * 3 + [7] * 3 + [8] * 3)
+    if(n_class == '3'):
+        label = Faced_Labels_3
+    elif(n_class == '9'):
+        label = Faced_Labels_9
     print(label)
 
     label_repeat = []

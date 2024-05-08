@@ -5,7 +5,8 @@ import numpy as np
 save_dir = './runs_seed/raw_batch15_timeLen30_tf16_sf16_tfLen48_multiFact2_lr0.000700_wd0.015000_epochs100_randSeed7_accSel'
 bn_val = 1
 
-n_total = 3394
+# n_total = 3394
+n_total = 3407
 n_counters = int(np.ceil(n_total / bn_val))
 
 use_features = 'features1_de_1s_all_normTrain'

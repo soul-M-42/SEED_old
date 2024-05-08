@@ -5,7 +5,8 @@ sf = 16;
 
 datadir = './runs_seed/raw_batch15_timeLen30_tf16_sf16_tfLen48_multiFact2_lr0.000700_wd0.015000_epochs100_randSeed7_accSel';
 disp(datadir)
-n_total = 3394;
+// n_total = 3394;
+n_total = 3407;
 augTime = 1;
 n_subs = 45;
 decay_rate = 0.990;
